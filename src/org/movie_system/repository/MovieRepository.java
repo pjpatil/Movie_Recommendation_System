@@ -1,5 +1,6 @@
 package org.movie_system.repository;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -150,6 +151,51 @@ public class MovieRepository extends DBHelper {
 		}
 		
 
+	}
+
+	public boolean checkMovId(int tempId) {
+		try{
+			stmt = conn.prepareStatement("select *from moviemaster where mov_id=?");
+			stmt.setInt(1, tempId);
+			ResultSet rs=stmt.executeQuery();
+			if(rs.next())
+				return true;
+			else
+				return false;
+		}
+		catch(Exception ex) {
+			System.out.println("Error is "+ex);
+			return false;
+		}
+	}
+
+	public boolean updateTitle(int tempId, String newTitle) {
+		try{
+			stmt = conn.prepareStatement("update moviemaster set mov_title =? where mov_id = ?");
+			stmt.setString(1, newTitle);
+			stmt.setInt(2, tempId);
+			int value=stmt.executeUpdate();
+			
+			return value > 0 ? true : false;
+		}
+		catch(Exception ex) {
+			System.out.println("Error is "+ex);
+			return false;
+		}
+	}
+
+	public boolean deleteMovie(int newId) {
+		try{
+			stmt = conn.prepareStatement("delete from moviemaster where mov_id =?");
+			stmt.setInt(1, newId);
+			int value=stmt.executeUpdate();
+			
+			return value > 0 ? true : false;
+		}
+		catch(Exception ex) {
+			System.out.println("Error is "+ex);
+			return false;
+		}
 	}
     
 

@@ -1,6 +1,6 @@
 package org.movie_system.model;
 
-public class GenresModel {
+public class GenresModel extends MovieMasterModel{
 	private int genid;
 	private String gentitle;
 	

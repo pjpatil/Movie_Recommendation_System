@@ -40,6 +40,8 @@ public class UserService {
 			boolean b=uRepo.changePassword(temob,newpassword);
 			return b;
 		}
+
+
 	
 	
 	

@@ -1,13 +1,13 @@
 package org.movie_system.model;
 
 public class MovieMasterModel {
-	private int mid;
-	private String movtitle;
-	private int movyear;
-	private int movtime;
-	private String movlang;
-	private String movdtrel;
-	private String movrelcountry;
+	private int mid;            // movie id
+	private String movtitle;    // movie title 
+	private int movyear;       // movie Year
+	private int movtime;       // movie duration time
+	private String movlang;    // movie language
+	private String movdtrel;  // movie rel date
+	private String movrelcountry;   // movie rel country
 	
 	public int getMid() {
 		return mid;

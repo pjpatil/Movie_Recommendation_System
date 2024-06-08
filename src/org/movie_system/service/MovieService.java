@@ -41,6 +41,20 @@ public class MovieService {
 	public List<MovieMasterModel> getTopTreeMovies() {
 		return mRepo.getTopTreeMovies();
 	}
+
+	public boolean checkMovId(int tempId) {
+		
+		return mRepo.checkMovId(tempId);
+	}
+
+	public boolean updateTitle(int tempId, String newTitle) {
+				return mRepo.updateTitle(tempId,newTitle);
+	}
+
+	public boolean deleteMovie(int newId) {
+		
+		return mRepo.deleteMovie(newId);
+	}
 	
 	
 	
