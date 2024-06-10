@@ -56,9 +56,51 @@ public class GenresRepository extends DBHelper {
 		}
 	}
 
+	
+	// Display all genres.
+	public List<GenresModel> getAllGenres() {
+	
+		 List<GenresModel> list=new ArrayList<GenresModel>();
+		try {
+			stmt = conn.prepareStatement("select *from genres order by gen_id asc");
+				rs=stmt.executeQuery();
+				while(rs.next())
+				{
+					GenresModel gmodel=new GenresModel();
+					gmodel.setGenid(rs.getInt(1));
+					gmodel.setGentitle(rs.getString(2));
+					
+					list.add(gmodel);
+					
+				}
+				return list.size() > 0 ? list : null;
+			} catch (Exception ex) {
+				System.out.println("Error is " + ex);
+			}
+		return list;
 		
+		
+	}
+	
+	public boolean isAddMovGenJoin(int tempmid, int tempid) {
+		
+		try {
+			stmt = conn.prepareStatement("insert into movie_genres values('0',?,?)");
+			stmt.setInt(1, tempmid);
+			stmt.setInt(2, tempid);
+			int value = stmt.executeUpdate();
+			return value > 0 ? true : false;
 
-	// fatch all genres
+		}
+		catch (Exception ex) {
+			System.out.println("Error is" + ex);
+			return false;
+		}
+	}
+	
+	
+
+	// fatch all genres in link movie
 	public List<GenresModel> getAllMovieGenres() {
 	    List<GenresModel> list=new ArrayList<GenresModel>();
 		List<GenresModel> movies=new ArrayList<>();
@@ -76,7 +118,7 @@ public class GenresRepository extends DBHelper {
 				gmodel.setMovlang(rs.getString(5));
 				gmodel.setMovdtrel(rs.getString(6));
 				gmodel.setMovrelcountry(rs.getString(7));
-				gmodel.setGentitle(rs.getString(8));
+				gmodel.setGenid(rs.getInt(8));
 				gmodel.setGentitle(rs.getString(9));
 				
 				list.add(gmodel);
@@ -90,6 +132,9 @@ public class GenresRepository extends DBHelper {
 
 
 	}
+		
+	
+	
 
 	
 }

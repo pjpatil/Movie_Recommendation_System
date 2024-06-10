@@ -21,11 +21,26 @@ public class GenresService {
 
 	}
 	
-	
+	public List<GenresModel> getAllGenres() {
+		
+		return gRepo.getAllGenres();
+	}
+
 	
 	public List<GenresModel> getAllMovieGenres() {
 		
 		return gRepo.getAllMovieGenres();
 	}
 
+
+	public boolean isAddMovGenJoin(int tempmid, int tempid) {
+		
+		return gRepo.isAddMovGenJoin(tempmid,tempid);
+	}
+
+
+
+	
+
+	
 }

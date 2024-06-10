@@ -19,12 +19,14 @@ public class RecommendationClientApplication {
 		MovieService ms = new MovieService();
 		GenresService gs = new GenresService();
 
-		do {
-			Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner(System.in);
 
-			System.out.println("+----------------------------------------------------------------------------------------+");
+		do {
+			System.out.println(
+					"+----------------------------------------------------------------------------------------+");
 			System.out.println("|\t\t\t** Movie_Recommendation_System_Menu **\t\t\t         |");
-			System.out.println("|----------------------------------------------------------------------------------------|");
+			System.out.println(
+					"|----------------------------------------------------------------------------------------|");
 			System.out.println("|\t\t\t\t\t\t\t\t\t\t\t |");
 			System.out.println("|\t\t 1 : Registration Panel.                                                 |");
 			System.out.println("|\t\t\t\t\t\t\t\t\t\t\t |");
@@ -32,11 +34,11 @@ public class RecommendationClientApplication {
 			System.out.println("|\t\t\t\t\t\t\t\t\t\t\t |");
 			System.out.println("|\t\t 3 : User Login Panel.                                                   |");
 			System.out.println("|\t\t\t\t\t\t\t\t\t\t\t |");
-			System.out.println("|\t\t 4 : Exit.                                                               |");
-			System.out.println("|\t\t\t\t\t\t\t\t\t\t\t |");
-			System.out.println("|----------------------------------------------------------------------------------------|");
+			System.out.println(
+					"|----------------------------------------------------------------------------------------|");
 			System.out.println("|\tAdmin:)mr_pawar96k\t\t\t\t\t\t<java_jdbc>\t |");
-			System.out.println("+----------------------------------------------------------------------------------------+");
+			System.out.println(
+					"+----------------------------------------------------------------------------------------+");
 			System.out.println("Enter your choice and Hit Enter:");
 			int choice = sc.nextInt();
 
@@ -144,7 +146,8 @@ public class RecommendationClientApplication {
 						ch = sc.nextInt();
 
 						switch (ch) {
-						case 1:
+						
+						case 1:          //1 : Add New movie. 
 							sc.nextLine();
 							System.out.println("Enter Movie Title:");
 							String movtitle = sc.nextLine();
@@ -167,34 +170,71 @@ public class RecommendationClientApplication {
 							mmodel.setMovlang(movlang);
 							mmodel.setMovdtrel(movdtrel);
 							mmodel.setMovrelcountry(movrelcountry);
-
 							b = ms.isAddMovie(mmodel);
 							if (b)
 								System.out.println("Movie Added Successfully in Application..");
 							else
 								System.out.println("movie not added..!");
-
+							
+							List<GenresModel> list1 = gs.getAllGenres();
+							if (list1 != null) {
+								System.out.println("+--------------------------------------------+");
+								System.out.println("| Genres_Id \tGenres_Title       |");
+								System.out.println("+--------------------------------------------+");
+								list1.forEach((mg) -> System.out.println("| "+mg.getGenid()+ "\t\t" + mg.getGentitle()));
+								System.out.println("+--------------------------------------------+");
+								
+								int tempmid=ms.getMovId();
+								boolean isTrue = true;
+								while (isTrue) {
+									System.out.println("you have to assing genres to movie, Type(yes/no):");
+									String msg = sc.next();
+									if (msg.equals("yes")) {
+										System.out.println("Enter Genres id:");
+										int tempid=sc.nextInt();
+									
+										b=gs.isAddMovGenJoin(tempmid,tempid);
+										if(b) {
+											System.out.println("add Done join data.............");
+										}
+										else {
+											System.out.println("not join to tables,,,,,");
+										}
+										isTrue = true;
+									} else {
+										isTrue = false;
+									}
+								}
+							} else {
+								System.out.println("Genres not Present...!");
+							}
+			
 							break;
-
-						case 2:
+							
+						case 2:                //2 : Display movie List.
 							List<MovieMasterModel> list = ms.getAllMovies();
 
 							if (list != null) {
-								System.out.println("-------------------------------------------------------------------------------------------------------------------------------");
+								System.out.println(
+										"-------------------------------------------------------------------------------------------------------------------------------");
 								System.out.println(
 										"Movie_Id \tMovie_Tatle \tMovie_Year \tMovie_Time \tMovie_language \tMovie_rel_date \tMovie_Country");
-								System.out.println("-------------------------------------------------------------------------------------------------------------------------------");
+								System.out.println(
+										"-------------------------------------------------------------------------------------------------------------------------------");
 
-								list.forEach((m) -> System.out.println(m.getMid() + "\t\t" + m.getMovtitle() + "\t\t"+ m.getMovyear() + "\t\t" + m.getMovtime() + "\t\t" + m.getMovlang() + "\t\t"+ m.getMovdtrel() + "\t\t" + m.getMovrelcountry()));
+								list.forEach((m) -> System.out.println(m.getMid() + "\t\t" + m.getMovtitle() + "\t\t"
+										+ m.getMovyear() + "\t\t" + m.getMovtime() + "\t\t" + m.getMovlang() + "\t\t"
+										+ m.getMovdtrel() + "\t\t" + m.getMovrelcountry()));
 
-								System.out.println("-------------------------------------------------------------------------------------------------------------------------------");
+								System.out.println(
+										"-------------------------------------------------------------------------------------------------------------------------------");
 							} else {
 								System.out.println("There is no Admin present...!");
 							}
 
 							break;
 
-						case 3:
+						case 3:          // 3 : Update movie.
 							System.out.println("Enter the Movie Id :");
 							int tempId = sc.nextInt();
 							boolean b22 = ms.checkMovId(tempId);
@@ -217,7 +257,7 @@ public class RecommendationClientApplication {
 
 							break;
 
-						case 4:
+						case 4:                                 // 4 : Delete Movie.
 							System.out.println("Enter the Movie Id :");
 							int newId = sc.nextInt();
 							boolean b4 = ms.checkMovId(newId);
@@ -240,84 +280,93 @@ public class RecommendationClientApplication {
 
 							break;
 
-						/*
-						 * case 5: System.out.println("--- File genres add --------"); 
-						 * b=gs.isBulkAddGenres();
-						 * 
-						 * if(b) System.out.println("Genres Added Successfully"); 
-						 * else
-						 * System.out.println("some problem is there");
-						 * 
-						 * break;
-						 */
-							
-						case 5:
+						
+
+						case 5:    //    5 : Add new Genres.
 							System.out.println("Enter genres title");
-						    sc.nextLine();
-						    String gentitle=sc.nextLine();
-						    
-						    GenresModel gModel=new GenresModel();
-						    gModel.setGentitle(gentitle);
-						    
-						    boolean b2=gs.isAddGenres(gModel);
-						    if(b2)
-						    {
-						    	System.out.println("Genres added successfully");
-						    }
-						    else
-						    {
-						    	System.out.println("Some problem is there");
-						    }
+							sc.nextLine();
+							String gentitle = sc.nextLine();
+
+							GenresModel gModel = new GenresModel();
+							gModel.setGentitle(gentitle);
+
+							boolean b2 = gs.isAddGenres(gModel);
+							if (b2) {
+								System.out.println("Genres added successfully");
+							} else {
+								System.out.println("Some problem is there");
+							}
 
 							break;
+							/*
+							 * case 5: System.out.println("--- File genres add --------");
+							 * b=gs.isBulkAddGenres();
+							 * 
+							 * if(b) System.out.println("Genres Added Successfully"); else
+							 * System.out.println("some problem is there");
+							 * 
+							 * break;
+							 */
 							
-						case 6:
-							List<GenresModel> list6=gs.getAllMovieGenres();
-                          if(list6!=null)
-                          {
-                        	  System.out.println("-------------------------------------------------------------------------------------------------------------------------------");
-                        	  System.out.println("Movie_Id \tMovie_Tatle \tMovie_Year \tMovie_Time \tMovie_language \tMovie_rel_date \tMovie_Country \tMovie_genres ");
-                        	  System.out.println("-------------------------------------------------------------------------------------------------------------------------------");
-                         	 list6.forEach((mg)->System.out.println(mg.getMid()+"\t\t"+mg.getMovtitle()+"\t\t"+mg.getMovyear()+"\t\t"+mg.getMovtime()+"\t\t"+mg.getMovlang()+"\t\t"+mg.getMovdtrel()+"\t\t"+mg.getMovrelcountry()+"\t"+mg.getGentitle()));
-                         	 
-                          }
-                          else
-                          {
-                         	 System.out.println("some problem is there");
-                          }
-       
+							
+						case 6:   // 6 : Display Genres wise Movie List .
+							List<GenresModel> list6 = gs.getAllMovieGenres();
+							if (list6 != null) {
+								System.out.println(
+										"-------------------------------------------------------------------------------------------------------------------------------");
+								System.out.println(
+										"Movie_Id \tMovie_Tatle \tMovie_Year \tMovie_Time \tMovie_language \tMovie_rel_date \tMovie_Country \tMovie_genres ");
+								System.out.println(
+										"-------------------------------------------------------------------------------------------------------------------------------");
+								list6.forEach((mg) -> System.out.println(
+										mg.getMid() + "\t\t" + mg.getMovtitle() + "\t\t" + mg.getMovyear() + "\t\t"
+												+ mg.getMovtime() + "\t\t" + mg.getMovlang() + "\t\t" + mg.getMovdtrel()
+												+ "\t\t" + mg.getMovrelcountry() + "\t" + mg.getGentitle()));
+
+							} else {
+								System.out.println("some problem is there");
+							}
+
 							break;
-						
-						case 7:
+
+						case 7:      // 7 : All Admin Display.
 							List<AdminModel> alist = as.getAllAdmin();
 							if (alist != null) {
-								System.out.println("-----------------------------------------------------------------------");
+								System.out.println(
+										"-----------------------------------------------------------------------");
 								System.out.println("Admin_Id \tAdmin_Name \tAdmin_Mobile_No \tAdmin_password");
-								System.out.println("-----------------------------------------------------------------------");
+								System.out.println(
+										"-----------------------------------------------------------------------");
 
-								alist.forEach((m) -> System.out.println(m.getAdminid() + "\t\t" + m.getAdminname()+ "\t\t" + m.getAmobileno() + "\t\t" + m.getApassword()));
+								alist.forEach((m) -> System.out.println(m.getAdminid() + "\t\t" + m.getAdminname()
+										+ "\t\t" + m.getAmobileno() + "\t\t" + m.getApassword()));
 
-								System.out.println("-----------------------------------------------------------------------");
+								System.out.println(
+										"-----------------------------------------------------------------------");
 							} else {
 								System.out.println("There is no Admin present...!");
 							}
 							break;
 
-						case 8:
+						case 8:      //  8 : All User Display.
 							List<UserModel> li = us.getAllUser();
 							if (li != null) {
-								System.out.println("----------------------------------------------------------------------------------");
+								System.out.println(
+										"----------------------------------------------------------------------------------");
 								System.out.println("User_Id \tUser_Name \tUser_Age \tUser_Mobile_No \tUser_Password");
-								System.out.println("----------------------------------------------------------------------------------");
+								System.out.println(
+										"----------------------------------------------------------------------------------");
 
-								li.forEach((m) -> System.out.println(m.getUid() + "\t\t" + m.getUname() + "\t\t"+ m.getUage() + "\t\t" + m.getUmobileno() + "\t\t" + m.getUpassword()));
+								li.forEach((m) -> System.out.println(m.getUid() + "\t\t" + m.getUname() + "\t\t"
+										+ m.getUage() + "\t\t" + m.getUmobileno() + "\t\t" + m.getUpassword()));
 
-								System.out.println("----------------------------------------------------------------------------------");
+								System.out.println(
+										"----------------------------------------------------------------------------------");
 							} else {
 								System.out.println("There is no User present...!");
 							}
-
 							break;
+							
 						}
 					} while (ch < 9);
 				}
@@ -365,7 +414,7 @@ public class RecommendationClientApplication {
 				boolean b3 = us.isUserValid(mono, password);
 
 				if (b3) {
-					System.out.println("User Login Successfull.....");
+					System.out.println("User Login Successfully.....");
 
 					do {
 						System.out.println("+------------------------------------------------------------------------------------------------------------+");
@@ -375,64 +424,120 @@ public class RecommendationClientApplication {
 						System.out.println("|............................................................................................................|");
 						List<MovieMasterModel> li = ms.getTopTreeMovies();
 						if (li != null) {
-							System.out.println("|                                                                                                            |");
-							System.out.println("|                                     Top 3 Movie                                                            |");
-							System.out.println("|                                                                                                            |");
-							System.out.println("|............................................................................................................|");
-							System.out.println("| Movie_Id \tMovie_Tatle  \tMovie_Time \tMovie_rel_date \t\tMovie_language  Movie_Country\t     |");
-							System.out.println("|............................................................................................................|");
+							System.out.println(
+									"|                                                                                                            |");
+							System.out.println(
+									"|                                     Top 3 Movie                                                            |");
+							System.out.println(
+									"|                                                                                                            |");
+							System.out.println(
+									"|............................................................................................................|");
+							System.out.println(
+									"| Movie_Id \tMovie_Tatle  \tMovie_Time \tMovie_rel_date \t\tMovie_language  Movie_Country\t     |");
+							System.out.println(
+									"|............................................................................................................|");
 
-							li.forEach((m) -> System.out.println("| "+m.getMid() + "\t\t" + m.getMovtitle()+ "\t\t" + m.getMovtime()+"\t\t"+m.getMovdtrel()+ "\t\t"+ m.getMovlang() + "\t\t" + m.getMovrelcountry()+"\t\t|"));
+							li.forEach((m) -> System.out.println("| " + m.getMid() + "\t\t" + m.getMovtitle() + "\t\t"
+									+ m.getMovtime() + "\t\t" + m.getMovdtrel() + "\t\t" + m.getMovlang() + "\t\t"
+									+ m.getMovrelcountry() + "\t\t|"));
 
-							System.out.println("+------------------------------------------------------------------------------------------------------------+");
+							System.out.println(
+									"+------------------------------------------------------------------------------------------------------------+");
 						}
-						
-						
-						
-						System.out.println("|                                                                                                            |");
-						System.out.println("|\t\t 1 : Top 3 Movies Display.                                                                   |");
-						System.out.println("|                                                                                                            |");
-						System.out.println("|\t\t 2 : Display all movies.                                                                     |");
-						System.out.println("|                                                                                                            |");
-						System.out.println("|\t\t 3 : User Watch History.                                                                     |");
-						System.out.println("|                                                                                                            |");
-						System.out.println("|\t\t 4 : Exit.                                                                                   |");
-						System.out.println("|                                                                                                            |");
-						System.out.println("+------------------------------------------------------------------------------------------------------------+");
+
+						System.out.println(
+								"|                                                                                                            |");
+						System.out.println(
+								"|\t\t 1 : Display all movies.                                                                     |");
+						System.out.println(
+								"|                                                                                                            |");
+						System.out.println(
+								"|\t\t 2 : Search movie By Name.                                                                   |");
+						System.out.println(
+								"|                                                                                                            |");
+						System.out.println(
+								"|\t\t 3 : User Watch History.                                                                     |");
+						System.out.println(
+								"|                                                                                                            |");
+						System.out.println(
+								"|\t\t 4 : Exit.                                                                                   |");
+						System.out.println(
+								"|                                                                                                            |");
+						System.out.println(
+								"+------------------------------------------------------------------------------------------------------------+");
 						System.out.println("Enter your choice:");
 						ch = sc.nextInt();
 
 						switch (ch) {
 
+//						case 1:
+//							
+//							li = ms.getTopTreeMovies();
+//
+//							if (li != null) {
+//								System.out.println("+---------------------------------------------------------------------------------------------------------------------+");
+//								System.out.println("| Movie_Id \tMovie_Tatle \tMovie_Year \tMovie_Time \tMovie_language \tMovie_rel_date \tMovie_Country");
+//								System.out.println("+---------------------------------------------------------------------------------------------------------------------+");
+//
+//								li.forEach((m) -> System.out.println("| "+m.getMid() + "\t\t" + m.getMovtitle() + "\t\t"+ m.getMovyear() + "\t\t" + m.getMovtime() + "\t\t" + m.getMovlang() + "\t\t"+ m.getMovdtrel() + "\t\t" + m.getMovrelcountry()));
+//
+//								System.out.println("+----------------------------------------------------------------------------------------------------------------------+");
+//							} 
+//
+//							break;
+
 						case 1:
-							
-							li = ms.getTopTreeMovies();
+							List<MovieMasterModel> list = ms.getAllMovies();
 
-							if (li != null) {
-								System.out.println("+---------------------------------------------------------------------------------------------------------------------+");
-								System.out.println("| Movie_Id \tMovie_Tatle \tMovie_Year \tMovie_Time \tMovie_language \tMovie_rel_date \tMovie_Country");
-								System.out.println("+---------------------------------------------------------------------------------------------------------------------+");
+							if (list != null) {
+								System.out.println(
+										"+---------------------------------------------------------------------------------------------------------------------+");
+								System.out.println(
+										"| Movie_Id \tMovie_Tatle \tMovie_Year \tMovie_Time \tMovie_language \tMovie_rel_date \tMovie_Country");
+								System.out.println(
+										"+---------------------------------------------------------------------------------------------------------------------+");
 
-								li.forEach((m) -> System.out.println("| "+m.getMid() + "\t\t" + m.getMovtitle() + "\t\t"+ m.getMovyear() + "\t\t" + m.getMovtime() + "\t\t" + m.getMovlang() + "\t\t"+ m.getMovdtrel() + "\t\t" + m.getMovrelcountry()));
+								list.forEach((m) -> System.out.println("| " + m.getMid() + "\t\t" + m.getMovtitle()
+										+ "\t\t" + m.getMovyear() + "\t\t" + m.getMovtime() + "\t\t" + m.getMovlang()
+										+ "\t\t" + m.getMovdtrel() + "\t\t" + m.getMovrelcountry()));
 
-								System.out.println("+----------------------------------------------------------------------------------------------------------------------+");
-							} 
+								System.out.println(
+										"+----------------------------------------------------------------------------------------------------------------------+");
+							} else {
+								System.out.println("There is no present Movies...!");
+							}
 
 							break;
 
 						case 2:
-							List<MovieMasterModel> list = ms.getAllMovies();
+							System.out.println("Enter Movie name to search :");
+							String smovie = sc.next();
+							b = ms.checkMovName(smovie);
 
-							if (list != null) {
-								System.out.println("+---------------------------------------------------------------------------------------------------------------------+");
-								System.out.println("| Movie_Id \tMovie_Tatle \tMovie_Year \tMovie_Time \tMovie_language \tMovie_rel_date \tMovie_Country");
-								System.out.println("+---------------------------------------------------------------------------------------------------------------------+");
+							if (b) {
+								System.out.println("movie present in table");
 
-								list.forEach((m) -> System.out.println("| "+m.getMid() + "\t\t" + m.getMovtitle() + "\t\t"+ m.getMovyear() + "\t\t" + m.getMovtime() + "\t\t" + m.getMovlang() + "\t\t"+ m.getMovdtrel() + "\t\t" + m.getMovrelcountry()));
+								list = ms.getMovie(smovie);
 
-								System.out.println("+----------------------------------------------------------------------------------------------------------------------+");
+								if (list != null) {
+									System.out.println(
+											"+---------------------------------------------------------------------------------------------------------------------+");
+									System.out.println(
+											"| Movie_Id \tMovie_Tatle \tMovie_Year \tMovie_Time \tMovie_language \tMovie_rel_date \tMovie_Country");
+									System.out.println(
+											"+---------------------------------------------------------------------------------------------------------------------+");
+
+									list.forEach((m) -> System.out
+											.println("| " + m.getMid() + "\t\t" + m.getMovtitle() + "\t\t"
+													+ m.getMovyear() + "\t\t" + m.getMovtime() + "\t\t" + m.getMovlang()
+													+ "\t\t" + m.getMovdtrel() + "\t\t" + m.getMovrelcountry()));
+
+									System.out.println(
+											"+----------------------------------------------------------------------------------------------------------------------+");
+								}
+
 							} else {
-								System.out.println("There is no present Movies...!");
+								System.out.println("Movie not present..!");
 							}
 
 							break;
@@ -440,7 +545,6 @@ public class RecommendationClientApplication {
 						case 3:
 							System.out.println("Some update leter......");
 							break;
-
 						/*
 						 * case 6: sc.nextLine(); System.out.println("Enter movie name"); String
 						 * movtitle1=sc.nextLine(); int movId=ms.getMovId(movtitle1);

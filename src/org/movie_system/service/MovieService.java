@@ -22,11 +22,16 @@ public class MovieService {
 	}
 
 	
+	public List<MovieMasterModel> getMovie(String smovie) {
+		
+		return mRepo.getMovie(smovie);
+	}
+
 	
-	
-	public int getMovId(String name)
+
+	public int getMovId()
     {
-    	return mRepo.getmovie(name);
+    	return mRepo.getMovId();
     }
 	
 //    public int getUserIdAutomatic()
@@ -47,6 +52,13 @@ public class MovieService {
 		return mRepo.checkMovId(tempId);
 	}
 
+	public boolean checkMovName(String smovie) {
+		
+		return mRepo.checkMovName(smovie);
+	}
+	
+	
+	
 	public boolean updateTitle(int tempId, String newTitle) {
 				return mRepo.updateTitle(tempId,newTitle);
 	}
@@ -55,9 +67,10 @@ public class MovieService {
 		
 		return mRepo.deleteMovie(newId);
 	}
+
 	
 	
 	
-	
+
 	
 }

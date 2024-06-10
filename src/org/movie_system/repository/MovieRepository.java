@@ -59,30 +59,61 @@ public class MovieRepository extends DBHelper {
 		}
 	}
 	
-	
-	public int getmovie(String name)
+	// Display movie by name 
+	public List<MovieMasterModel> getMovie(String smovie)
     {
- 	   try
- 	   {
- 		   stmt=conn.prepareStatement("select movid from moviemaster where mov_title=?");
- 		   stmt.setString(1, name);
- 		   rs=stmt.executeQuery();
- 		   if(rs.next())
- 		   {
- 			   return rs.getInt(1);
- 		   }
- 		   else
- 		   {
- 			   return -1;
- 		   }
- 		   
- 	   }
- 	   catch(Exception ex)
- 	   {
- 		   System.out.println("Exception is"+ex);
- 		   return -1;
- 	   }
+ 	  
+ 	  List<MovieMasterModel> list = new ArrayList<MovieMasterModel>();
+		try {
+			stmt = conn.prepareStatement("select *from moviemaster where mov_title=?");
+			stmt.setString(1, smovie);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				MovieMasterModel model = new MovieMasterModel();
+			
+				model.setMid(rs.getInt(1));
+				model.setMovtitle(rs.getString(2));
+				model.setMovyear(rs.getInt(3));
+				model.setMovtime(rs.getInt(4));
+				model.setMovlang(rs.getString(5));
+				model.setMovdtrel(rs.getString(6));
+				model.setMovrelcountry(rs.getString(7));
+				list.add(model);
+			}
+			return list.size() > 0 ? list : null;
+		} catch (Exception ex) {
+			System.out.println("Error is " + ex);
+			return null;
+		}
+ 	   
     }
+	
+	
+	public int getMovId() {
+		try
+	 	   {
+	 		   stmt=conn.prepareStatement("select max(mov_id) from moviemaster");
+	 		   rs=stmt.executeQuery();
+	 		   if(rs.next())
+	 		   {
+	 			   this.uid=rs.getInt(1);
+	 		   }
+//	 		   ++uid;
+	 		   return uid;
+	 		   
+	 	   }
+	 	   catch(Exception ex)
+	 	   {
+	 		   return 0;
+	 		   
+	 	   }
+//		return 0;
+	}
+
+	
+	
+	
+	
 //    public int getUserIdAutomatic()
 //    {
 // 	   try
@@ -127,6 +158,8 @@ public class MovieRepository extends DBHelper {
 // 	   }
 //    }
 
+	
+	// Display Top tree movie.
 	public List<MovieMasterModel> getTopTreeMovies() {
 		List<MovieMasterModel> list = new ArrayList<MovieMasterModel>();
 		try {
@@ -149,10 +182,9 @@ public class MovieRepository extends DBHelper {
 			System.out.println("Error is " + ex);
 			return null;
 		}
-		
-
 	}
 
+	// check movie ID present
 	public boolean checkMovId(int tempId) {
 		try{
 			stmt = conn.prepareStatement("select *from moviemaster where mov_id=?");
@@ -168,7 +200,26 @@ public class MovieRepository extends DBHelper {
 			return false;
 		}
 	}
-
+	
+	// check movie Name present
+	public boolean checkMovName(String smovie) {
+		try{
+			stmt = conn.prepareStatement("select *from moviemaster where mov_title=?");
+			stmt.setString(1, smovie);
+			ResultSet rs=stmt.executeQuery();
+			if(rs.next())
+				return true;
+			else
+				return false;
+		}
+		catch(Exception ex) {
+			System.out.println("Error is "+ex);
+			return false;
+		}
+	}
+	
+	
+	//  Update movie Title by id
 	public boolean updateTitle(int tempId, String newTitle) {
 		try{
 			stmt = conn.prepareStatement("update moviemaster set mov_title =? where mov_id = ?");
@@ -183,7 +234,9 @@ public class MovieRepository extends DBHelper {
 			return false;
 		}
 	}
+	
 
+	// delete MOvie by id
 	public boolean deleteMovie(int newId) {
 		try{
 			stmt = conn.prepareStatement("delete from moviemaster where mov_id =?");
@@ -197,7 +250,8 @@ public class MovieRepository extends DBHelper {
 			return false;
 		}
 	}
-    
 
 	
+	
+
 }
