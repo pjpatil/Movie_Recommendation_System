@@ -59,8 +59,7 @@ public class RecommendationClientApplication {
 					ch = sc.nextInt();
 
 					switch (ch) {
-					case 1:
-						;
+					case 1:   //  1 : Admin Registration. 
 						sc.nextLine();
 						System.out.println("Enter Admin name     :");
 						String adminname = sc.next();
@@ -82,7 +81,7 @@ public class RecommendationClientApplication {
 
 						break;
 
-					case 2:
+					case 2:     // 2 : User Registration.
 						sc.nextLine();
 						System.out.println("Enter User name     :");
 						String unname = sc.next();
@@ -137,17 +136,18 @@ public class RecommendationClientApplication {
 						System.out.println("|\t 3 : Update movie.                                 |");
 						System.out.println("|\t 4 : Delete Movie.                                 |");
 						System.out.println("|\t 5 : Add new Genres.                               |");
-						System.out.println("|\t 6 : Display Genres wise Movie List .              |");
-						System.out.println("|\t 7 : All Admin Display.                            |");
-						System.out.println("|\t 8 : All User Display.                             |");
-						System.out.println("|\t 9 : Exit.                                         |");
+						System.out.println("|\t 6 : Display Genres wise Movie List.               |");
+						System.out.println("|\t 7 : Search Genres by Movie Title.                 |");
+						System.out.println("|\t 8 : All Admin Display.                            |");
+						System.out.println("|\t 9 : All User Display.                             |");
+						System.out.println("|\t 10: Exit.                                         |");
 						System.out.println("+..........................................................+");
 						System.out.println("Enter your choice:");
 						ch = sc.nextInt();
 
 						switch (ch) {
-						
-						case 1:          //1 : Add New movie. 
+
+						case 1: // 1 : Add New movie.
 							sc.nextLine();
 							System.out.println("Enter Movie Title:");
 							String movtitle = sc.nextLine();
@@ -175,29 +175,29 @@ public class RecommendationClientApplication {
 								System.out.println("Movie Added Successfully in Application..");
 							else
 								System.out.println("movie not added..!");
-							
+
 							List<GenresModel> list1 = gs.getAllGenres();
 							if (list1 != null) {
 								System.out.println("+--------------------------------------------+");
 								System.out.println("| Genres_Id \tGenres_Title       |");
 								System.out.println("+--------------------------------------------+");
-								list1.forEach((mg) -> System.out.println("| "+mg.getGenid()+ "\t\t" + mg.getGentitle()));
+								list1.forEach(
+										(mg) -> System.out.println("| " + mg.getGenid() + "\t\t" + mg.getGentitle()));
 								System.out.println("+--------------------------------------------+");
-								
-								int tempmid=ms.getMovId();
+
+								int tempmid = ms.getMovId();
 								boolean isTrue = true;
 								while (isTrue) {
 									System.out.println("you have to assing genres to movie, Type(yes/no):");
 									String msg = sc.next();
 									if (msg.equals("yes")) {
 										System.out.println("Enter Genres id:");
-										int tempid=sc.nextInt();
-									
-										b=gs.isAddMovGenJoin(tempmid,tempid);
-										if(b) {
+										int tempid = sc.nextInt();
+
+										b = gs.isAddMovGenJoin(tempmid, tempid);
+										if (b) {
 											System.out.println("add Done join data.............");
-										}
-										else {
+										} else {
 											System.out.println("not join to tables,,,,,");
 										}
 										isTrue = true;
@@ -208,10 +208,10 @@ public class RecommendationClientApplication {
 							} else {
 								System.out.println("Genres not Present...!");
 							}
-			
+
 							break;
-							
-						case 2:                //2 : Display movie List.
+
+						case 2: // 2 : Display movie List.
 							List<MovieMasterModel> list = ms.getAllMovies();
 
 							if (list != null) {
@@ -234,7 +234,7 @@ public class RecommendationClientApplication {
 
 							break;
 
-						case 3:          // 3 : Update movie.
+						case 3: // 3 : Update movie.
 							System.out.println("Enter the Movie Id :");
 							int tempId = sc.nextInt();
 							boolean b22 = ms.checkMovId(tempId);
@@ -257,7 +257,7 @@ public class RecommendationClientApplication {
 
 							break;
 
-						case 4:                                 // 4 : Delete Movie.
+						case 4: // 4 : Delete Movie.
 							System.out.println("Enter the Movie Id :");
 							int newId = sc.nextInt();
 							boolean b4 = ms.checkMovId(newId);
@@ -280,9 +280,7 @@ public class RecommendationClientApplication {
 
 							break;
 
-						
-
-						case 5:    //    5 : Add new Genres.
+						case 5: // 5 : Add new Genres.
 							System.out.println("Enter genres title");
 							sc.nextLine();
 							String gentitle = sc.nextLine();
@@ -298,18 +296,17 @@ public class RecommendationClientApplication {
 							}
 
 							break;
-							/*
-							 * case 5: System.out.println("--- File genres add --------");
-							 * b=gs.isBulkAddGenres();
-							 * 
-							 * if(b) System.out.println("Genres Added Successfully"); else
-							 * System.out.println("some problem is there");
-							 * 
-							 * break;
-							 */
-							
-							
-						case 6:   // 6 : Display Genres wise Movie List .
+						/*
+						 * case 5: System.out.println("--- File genres add --------");
+						 * b=gs.isBulkAddGenres();
+						 * 
+						 * if(b) System.out.println("Genres Added Successfully"); else
+						 * System.out.println("some problem is there");
+						 * 
+						 * break;
+						 */
+
+						case 6: // 6 : Display Genres wise Movie List .
 							List<GenresModel> list6 = gs.getAllMovieGenres();
 							if (list6 != null) {
 								System.out.println(
@@ -329,7 +326,23 @@ public class RecommendationClientApplication {
 
 							break;
 
-						case 7:      // 7 : All Admin Display.
+						case 7:
+							 sc.nextLine();
+							 System.out.println("Enter movie name");
+							 String movtit=sc.nextLine();
+							 GenresModel mm=ms.getConcat(movtit);
+							 System.out.println("-------------------------------------------------------------------------------------------------------------------------------");
+							 System.out.println("Movie_Id \tMovie_Tatle \tMovie_Year \tMovie_Time \tMovie_language \tMovie_rel_date \tMovie_Country \tMovie_genres ");
+							 System.out.println("-------------------------------------------------------------------------------------------------------------------------------");
+								
+							 System.out.println(mm.getMid()+"\t\t"+mm.getMovtitle()+"\t\t"+mm.getMovyear()+"\t\t"+mm.getMovtime()+"\t\t"+mm.getMovlang()+"\t\t"+mm.getMovdtrel()+"\t"+mm.getMovrelcountry()+"\t\t"+mm.getGentitle());
+							 
+							 System.out.println("-------------------------------------------------------------------------------------------------------------------------------");
+							
+							break;
+							
+							
+						case 8: // 7 : All Admin Display.
 							List<AdminModel> alist = as.getAllAdmin();
 							if (alist != null) {
 								System.out.println(
@@ -348,7 +361,7 @@ public class RecommendationClientApplication {
 							}
 							break;
 
-						case 8:      //  8 : All User Display.
+						case 9: // 8 : All User Display.
 							List<UserModel> li = us.getAllUser();
 							if (li != null) {
 								System.out.println(
@@ -366,9 +379,9 @@ public class RecommendationClientApplication {
 								System.out.println("There is no User present...!");
 							}
 							break;
-							
+
 						}
-					} while (ch < 9);
+					} while (ch < 10);
 				}
 
 				else {
@@ -417,11 +430,16 @@ public class RecommendationClientApplication {
 					System.out.println("User Login Successfully.....");
 
 					do {
-						System.out.println("+------------------------------------------------------------------------------------------------------------+");
-						System.out.println("|                                                                                                            |");
-						System.out.println("|                                   **    USER MENU    ***                                                   |");
-						System.out.println("|                                                                                                            |");
-						System.out.println("|............................................................................................................|");
+						System.out.println(
+								"+------------------------------------------------------------------------------------------------------------+");
+						System.out.println(
+								"|                                                                                                            |");
+						System.out.println(
+								"|                                   **    USER MENU    ***                                                   |");
+						System.out.println(
+								"|                                                                                                            |");
+						System.out.println(
+								"|............................................................................................................|");
 						List<MovieMasterModel> li = ms.getTopTreeMovies();
 						if (li != null) {
 							System.out.println(
@@ -437,34 +455,21 @@ public class RecommendationClientApplication {
 							System.out.println(
 									"|............................................................................................................|");
 
-							li.forEach((m) -> System.out.println("| " + m.getMid() + "\t\t" + m.getMovtitle() + "\t\t"
-									+ m.getMovtime() + "\t\t" + m.getMovdtrel() + "\t\t" + m.getMovlang() + "\t\t"
-									+ m.getMovrelcountry() + "\t\t|"));
+							li.forEach((m) -> System.out.println("| " + m.getMid() + "\t\t" + m.getMovtitle() + "\t\t"+ m.getMovtime() + "\t\t" + m.getMovdtrel() + "\t\t" + m.getMovlang() + "\t\t"+ m.getMovrelcountry() ));
 
-							System.out.println(
-									"+------------------------------------------------------------------------------------------------------------+");
+							System.out.println("+------------------------------------------------------------------------------------------------------------+");
 						}
 
-						System.out.println(
-								"|                                                                                                            |");
-						System.out.println(
-								"|\t\t 1 : Display all movies.                                                                     |");
-						System.out.println(
-								"|                                                                                                            |");
-						System.out.println(
-								"|\t\t 2 : Search movie By Name.                                                                   |");
-						System.out.println(
-								"|                                                                                                            |");
-						System.out.println(
-								"|\t\t 3 : User Watch History.                                                                     |");
-						System.out.println(
-								"|                                                                                                            |");
-						System.out.println(
-								"|\t\t 4 : Exit.                                                                                   |");
-						System.out.println(
-								"|                                                                                                            |");
-						System.out.println(
-								"+------------------------------------------------------------------------------------------------------------+");
+						System.out.println("|                                                                                                            |");
+						System.out.println("|\t\t 1 : Display all movies.                                                                     |");
+						System.out.println("|                                                                                                            |");
+						System.out.println("|\t\t 2 : Search movie By Name.                                                                   |");
+						System.out.println("|                                                                                                            |");
+						System.out.println("|\t\t 3 : User Watch History.                                                                     |");
+						System.out.println("|                                                                                                            |");
+						System.out.println("|\t\t 4 : Exit.                                                                                   |");
+						System.out.println("|                                                                                                            |");
+						System.out.println("+------------------------------------------------------------------------------------------------------------+");
 						System.out.println("Enter your choice:");
 						ch = sc.nextInt();
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.movie_system.model.AdminModel;
+import org.movie_system.model.GenresModel;
 import org.movie_system.model.MovieMasterModel;
 import org.movie_system.model.UserModel;
 
@@ -252,6 +253,35 @@ public class MovieRepository extends DBHelper {
 	}
 
 	
-	
+	public GenresModel getConcat(String movtit) {
+		List<GenresModel> list=new ArrayList<GenresModel>();
+		GenresModel gModel=new GenresModel();
+		try{
+			stmt=conn.prepareStatement("select m.mov_id, m.mov_title,m.mov_year,m.mov_time,m.mov_lang,m.mov_dt_rel,m.mov_rel_country,group_concat(g.gen_title) from moviemaster m inner join movie_genres mg on mg.mov_id=m.mov_id inner join genres g on g.gen_id=mg.gen_id where m.mov_title=? group by m.mov_id, m.mov_title,m.mov_year,m.mov_time,m.mov_lang,m.mov_dt_rel,m.mov_rel_country");
+			stmt.setString(1, movtit);
+			rs=stmt.executeQuery();
+			if(rs.next())
+	 		   {
+				gModel.setMid(rs.getInt(1));
+				gModel.setMovtitle(rs.getString(2));
+				gModel.setMovyear(rs.getInt(3));
+				gModel.setMovtime(rs.getInt(4));
+				gModel.setMovlang(rs.getString(5));
+				gModel.setMovdtrel(rs.getString(6));
+				gModel.setMovrelcountry(rs.getString(7));
+				gModel.setGentitle(rs.getString(8));
+				
+				list.add(gModel);
+	 		   }
+			return gModel;
+		}
+		catch(Exception ex)
+	 	   {
+//	 		   System.out.println("Erroer is"+ex);
+	 		   return gModel;
+	 	   } 
+	}
 
+	
+	
 }

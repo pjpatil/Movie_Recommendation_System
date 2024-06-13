@@ -2,6 +2,7 @@ package org.movie_system.service;
 
 import java.util.List;
 
+import org.movie_system.model.GenresModel;
 import org.movie_system.model.MovieMasterModel;
 import org.movie_system.model.UserModel;
 import org.movie_system.repository.MovieRepository;
@@ -66,6 +67,11 @@ public class MovieService {
 	public boolean deleteMovie(int newId) {
 		
 		return mRepo.deleteMovie(newId);
+	}
+
+	public GenresModel getConcat(String movtit) {
+		
+		return mRepo.getConcat(movtit);
 	}
 
 	
