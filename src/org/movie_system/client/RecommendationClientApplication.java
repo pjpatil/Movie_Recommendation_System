@@ -5,10 +5,12 @@ import java.util.*;
 import org.movie_system.model.AdminModel;
 import org.movie_system.model.GenresModel;
 import org.movie_system.model.MovieMasterModel;
+import org.movie_system.model.RatingModel;
 import org.movie_system.model.UserModel;
 import org.movie_system.service.AdminService;
 import org.movie_system.service.GenresService;
 import org.movie_system.service.MovieService;
+import org.movie_system.service.RatingService;
 import org.movie_system.service.UserService;
 
 public class RecommendationClientApplication {
@@ -18,13 +20,14 @@ public class RecommendationClientApplication {
 		UserService us = new UserService();
 		MovieService ms = new MovieService();
 		GenresService gs = new GenresService();
-
+		RatingService rts = new RatingService();
+		
 		Scanner sc = new Scanner(System.in);
 
 		do {
 			System.out.println(
 					"+----------------------------------------------------------------------------------------+");
-			System.out.println("|\t\t\t** Movie_Recommendation_System_Menu **\t\t\t         |");
+			System.out.println("|\t\t\t🎥🎥 Movie_Recommendation_System_Menu 🎥🎥\t\t         |");
 			System.out.println(
 					"|----------------------------------------------------------------------------------------|");
 			System.out.println("|\t\t\t\t\t\t\t\t\t\t\t |");
@@ -49,7 +52,7 @@ public class RecommendationClientApplication {
 				int ch = 0;
 				do {
 					System.out.println("+..........................................................+");
-					System.out.println("|\t\t** Registration_Menu **\t\t           |");
+					System.out.println("|\t\t🎥🎥 Registration_Menu 🎥🎥\t\t   |");
 					System.out.println("|..........................................................|");
 					System.out.println("|\t\t 1 : Admin Registration.                   |");
 					System.out.println("|\t\t 2 : User Registration.                    |");
@@ -414,7 +417,6 @@ public class RecommendationClientApplication {
 
 			// ...................... User Login ..................................
 			case 3:
-
 				sc.nextLine();
 				System.out.println("+..........................................................+");
 				System.out.println("|\t\t** User_Login **\t\t           |");
@@ -425,31 +427,32 @@ public class RecommendationClientApplication {
 				password = sc.next();
 				System.out.println("+..........................................................+");
 				boolean b3 = us.isUserValid(mono, password);
-
 				if (b3) {
 					System.out.println("User Login Successfully.....");
+					int uid=0;
+					List<UserModel> userid =us.getuserid(mono, password);
+					if (userid != null) {
+						System.out.println("+------------------------------------------------------------------------------------------------------------+");
+						for (UserModel um : userid) {
+							uid=um.getUid();
+							System.out.println("|\tUser_Id is :"+uid+"\t\t.....(^_^)..... WelCome "+um.getUname()+" .....(^_^).....                                |");
+						}
+					}
 
 					do {
-						System.out.println(
-								"+------------------------------------------------------------------------------------------------------------+");
-						System.out.println(
-								"|                                                                                                            |");
-						System.out.println(
-								"|                                   **    USER MENU    ***                                                   |");
-						System.out.println(
-								"|                                                                                                            |");
-						System.out.println(
-								"|............................................................................................................|");
+						System.out.println("+------------------------------------------------------------------------------------------------------------+");
+						System.out.println("|                                                                                                            |");
+						System.out.println("|                                   **    USER MENU    ***                                                   |");
+						System.out.println("|                                                                                                            |");
+						System.out.println("|............................................................................................................|");
 						List<MovieMasterModel> li = ms.getTopTreeMovies();
 						if (li != null) {
 							System.out.println(
 									"|                                                                                                            |");
 							System.out.println(
-									"|                                     Top 3 Movie                                                            |");
+									"|                                🎥🎥🎥🎥      Top 3 Movie       🎥🎥🎥🎥                                      |");
 							System.out.println(
 									"|                                                                                                            |");
-							System.out.println(
-									"|............................................................................................................|");
 							System.out.println(
 									"| Movie_Id \tMovie_Tatle  \tMovie_Time \tMovie_rel_date \t\tMovie_language  Movie_Country\t     |");
 							System.out.println(
@@ -459,26 +462,57 @@ public class RecommendationClientApplication {
 
 							System.out.println("+------------------------------------------------------------------------------------------------------------+");
 						}
-
+						sc.nextLine();
+						boolean isTrue = true;
+						while (isTrue) {
+							System.out.println("\"You have to Watch Top 3 Movies, type(yes/no) :");
+							String msg = sc.next();
+							if (msg.equals("yes")) {
+								System.out.println("Enter Movie id : ");
+								int mpid = sc.nextInt();
+								System.out.println("Enter movie Rating Number(1-5): ");
+								float rating=sc.nextFloat();
+								System.out.println("Enter movie Feedback : ");
+								String feedback=sc.next();
+								
+								RatingModel rModel=new RatingModel();
+								rModel.setRating_num(rating);
+								rModel.setFeedback(feedback);
+								rModel.setMid(mpid);
+								b=rts.isAddUserWatchHistory(uid,rModel);
+//								b = gs.isAddUserWatchHistory(uid,mpid,rating,feedback);
+								if (b) {
+									System.out.println("Thnk you for Giving Review (^_^).");
+								} else {
+									System.out.println("not join to tables...!");
+								}
+								isTrue = true;
+							} else {
+								isTrue = false;
+							}
+						}
+						System.out.println("+------------------------------------------------------------------------------------------------------------+");
 						System.out.println("|                                                                                                            |");
 						System.out.println("|\t\t 1 : Display all movies.                                                                     |");
 						System.out.println("|                                                                                                            |");
 						System.out.println("|\t\t 2 : Search movie By Name.                                                                   |");
 						System.out.println("|                                                                                                            |");
-						System.out.println("|\t\t 3 : User Watch History.                                                                     |");
+						System.out.println("|\t\t 3 : Search movie By Genres.                                                                 |");
 						System.out.println("|                                                                                                            |");
-						System.out.println("|\t\t 4 : Exit.                                                                                   |");
+						System.out.println("|\t\t 4 : Movie rating Prediction.                                                                |");
+						System.out.println("|                                                                                                            |");
+						System.out.println("|\t\t 5 : User Watch History.                                                                     |");
+						System.out.println("|                                                                                                            |");
+						System.out.println("|\t\t 6 : Exit.                                                                                   |");
 						System.out.println("|                                                                                                            |");
 						System.out.println("+------------------------------------------------------------------------------------------------------------+");
 						System.out.println("Enter your choice:");
 						ch = sc.nextInt();
-
+						
 						switch (ch) {
 
 //						case 1:
-//							
 //							li = ms.getTopTreeMovies();
-//
 //							if (li != null) {
 //								System.out.println("+---------------------------------------------------------------------------------------------------------------------+");
 //								System.out.println("| Movie_Id \tMovie_Tatle \tMovie_Year \tMovie_Time \tMovie_language \tMovie_rel_date \tMovie_Country");
@@ -488,26 +522,52 @@ public class RecommendationClientApplication {
 //
 //								System.out.println("+----------------------------------------------------------------------------------------------------------------------+");
 //							} 
-//
 //							break;
 
 						case 1:
 							List<MovieMasterModel> list = ms.getAllMovies();
 
 							if (list != null) {
-								System.out.println(
-										"+---------------------------------------------------------------------------------------------------------------------+");
-								System.out.println(
-										"| Movie_Id \tMovie_Tatle \tMovie_Year \tMovie_Time \tMovie_language \tMovie_rel_date \tMovie_Country");
-								System.out.println(
-										"+---------------------------------------------------------------------------------------------------------------------+");
+								System.out.println("+---------------------------------------------------------------------------------------------------------------------+");
+								System.out.println("| Movie_Id \tMovie_Tatle \tMovie_Year \tMovie_Time \tMovie_language \tMovie_rel_date \tMovie_Country");
+								System.out.println("+---------------------------------------------------------------------------------------------------------------------+");
 
 								list.forEach((m) -> System.out.println("| " + m.getMid() + "\t\t" + m.getMovtitle()
 										+ "\t\t" + m.getMovyear() + "\t\t" + m.getMovtime() + "\t\t" + m.getMovlang()
 										+ "\t\t" + m.getMovdtrel() + "\t\t" + m.getMovrelcountry()));
 
-								System.out.println(
-										"+----------------------------------------------------------------------------------------------------------------------+");
+								System.out.println("+----------------------------------------------------------------------------------------------------------------------+");
+								
+								sc.nextLine();
+								isTrue = true;
+								while (isTrue) {
+									System.out.println("\"You have to Watch Movies, type(yes/no) :");
+									String msg = sc.next();
+									if (msg.equals("yes")) {
+										System.out.println("Enter Movie id : ");
+										int mpid = sc.nextInt();
+										System.out.println("Enter movie Rating Number(1-5): ");
+										float rating=sc.nextFloat();
+										System.out.println("Enter movie Feedback : ");
+										String feedback=sc.next();
+										
+										RatingModel rModel=new RatingModel();
+										rModel.setRating_num(rating);
+										rModel.setFeedback(feedback);
+										rModel.setMid(mpid);
+										b=rts.isAddUserWatchHistory(uid,rModel);
+//										b = gs.isAddUserWatchHistory(uid,mpid,rating,feedback);
+										if (b) {
+											System.out.println("Thnk you for Giving Review (^_^).");
+										} else {
+											System.out.println("not join to tables...!");
+										}
+										isTrue = true;
+									} else {
+										isTrue = false;
+									}
+								}
+							
 							} else {
 								System.out.println("There is no present Movies...!");
 							}
@@ -539,6 +599,35 @@ public class RecommendationClientApplication {
 
 									System.out.println(
 											"+----------------------------------------------------------------------------------------------------------------------+");
+									sc.nextLine();
+									isTrue = true;
+									while (isTrue) {
+										System.out.println("\"You have to Watch Movies, type(yes/no) :");
+										String msg = sc.next();
+										if (msg.equals("yes")) {
+											System.out.println("Enter Movie id : ");
+											int mpid = sc.nextInt();
+											System.out.println("Enter movie Rating Number(1-5): ");
+											float rating=sc.nextFloat();
+											System.out.println("Enter movie Feedback : ");
+											String feedback=sc.next();
+										
+											RatingModel rModel=new RatingModel();
+											rModel.setRating_num(rating);
+											rModel.setFeedback(feedback);
+											rModel.setMid(mpid);
+											b=rts.isAddUserWatchHistory(uid,rModel);
+//											b = gs.isAddUserWatchHistory(uid,mpid,rating,feedback);
+											if (b) {
+												System.out.println("Thnk you for Giving Review (^_^).");
+											} else {
+												System.out.println("not join to tables..!");
+											}
+											isTrue = true;
+										} else {
+											isTrue = false;
+										}
+									}
 								}
 
 							} else {
@@ -548,11 +637,73 @@ public class RecommendationClientApplication {
 							break;
 
 						case 3:
-							System.out.println("Some update leter......");
+							List<GenresModel> list1 = gs.getAllGenres();
+							if (list1 != null) {
+								System.out.println("+--------------------------------------------+");
+								System.out.println("| Genres_Id \tGenres_Title       |");
+								System.out.println("+--------------------------------------------+");
+								list1.forEach(
+										(mg) -> System.out.println("| " + mg.getGenid() + "\t\t" + mg.getGentitle()));
+								System.out.println("+--------------------------------------------+");
+							}
+							
+							System.out.println("Enter Genres Name to search movie");
+							String gentitle=sc.next();
+							
+							List<GenresModel> list2 =gs.SearchByGenres(gentitle);
+
+							if (list2 != null) {
+								System.out.println(
+										"+---------------------------------------------------------------------------------------------------------------------+");
+								System.out.println(
+										"| Movie_Id \tMovie_Tatle \tMovie_Year \tMovie_Time \tMovie_language \tMovie_Country");
+								System.out.println(
+										"+---------------------------------------------------------------------------------------------------------------------+");
+								list2.forEach((m) -> System.out.println("| " + m.getMid()+ "\t\t" + m.getMovtitle()+"\t\t"+m.getMovyear()+"\t\t"+m.getMovtime()+"\t\t"+m.getMovlang()+"\t\t"+m.getMovrelcountry()));
+
+								System.out.println(
+										"+----------------------------------------------------------------------------------------------------------------------+");
+							}
+							
+							sc.nextLine();
+							isTrue = true;
+							while (isTrue) {
+								System.out.println("\"You have to Watch Movies, type(yes/no) :");
+								String msg = sc.next();
+								if (msg.equals("yes")) {
+									System.out.println("Enter Movie id : ");
+									int mpid = sc.nextInt();
+									System.out.println("Enter movie Rating Number(1-5): ");
+									float rating=sc.nextFloat();
+									System.out.println("Enter movie Feedback : ");
+									String feedback=sc.next();
+									
+									RatingModel rModel=new RatingModel();
+									rModel.setRating_num(rating);
+									rModel.setFeedback(feedback);
+									rModel.setMid(mpid);
+									b=rts.isAddUserWatchHistory(uid,rModel);
+//									b = gs.isAddUserWatchHistory(uid,mpid,rating,feedback);
+									if (b) {
+										System.out.println("Thnk you for Giving Review (^_^).");
+									} else {
+										System.out.println("not join to tables...!");
+									}
+									isTrue = true;
+								} else {
+									isTrue = false;
+								}
+							}
+							
 							break;
+							
+//						case 3:
+//							System.out.println("Some update leter......");
+//							break;
 						/*
-						 * case 6: sc.nextLine(); System.out.println("Enter movie name"); String
-						 * movtitle1=sc.nextLine(); int movId=ms.getMovId(movtitle1);
+						 * case 6: sc.nextLine(); System.out.println("Enter movie name"); 
+						 * String movtitle1=sc.nextLine(); 
+						 * int movId=ms.getMovId(movtitle1);
 						 * System.out.println(movId); if(movId!=-1) {
 						 * System.out.println("Enter username"); String uname=sc.nextLine();
 						 * System.out.println("Enter user age"); int uage=sc.nextInt();
@@ -576,9 +727,36 @@ public class RecommendationClientApplication {
 						 * 
 						 * break;
 						 */
+							
+						case 4:
+							System.out.println("---------------------------  Movie Predicion  ----------------------------------------- ");
+							rts.predict();
+
+							break;		
+							
+							
+							
+						case 5:
+							List<RatingModel> rli = rts.getUserWatchHistory(uid);
+							if (rli != null) {
+								System.out.println("+------------------------------------------------------------------------------------------------------+");
+								System.out.println("| Movie_Id \tMovie_Tatle \tMovie_Year \tMovie_Time \tMovie_Rating \tMovie_Feedback");
+								System.out.println("+------------------------------------------------------------------------------------------------------+");
+
+								rli.forEach((m) -> System.out.println("| " + m.getMid() + "\t\t" + m.getMovtitle() + "\t\t"
+												+ m.getMovyear() + "\t\t" + m.getMovtime() + "\t\t" +m.getRating_num()+"\t\t"+m.getFeedback()));
+
+								System.out.println("+------------------------------------------------------------------------------------------------------+");
+							
+							}
+							
+							break;
+							
+						
+							
 						}
 
-					} while (ch < 4);
+					} while (ch < 6);
 				}
 
 				else {

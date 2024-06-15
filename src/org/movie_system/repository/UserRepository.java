@@ -58,10 +58,13 @@ public class UserRepository extends DBHelper {
 			stmt.setString(2,password);
 			
 			try(ResultSet rs=stmt.executeQuery()){
-				if(rs.next())
+				if(rs.next()) {
 					return true;
-				else
+				}
+				else {
 					return false;
+				}
+					
 			}
 		}
 		catch(Exception ex) {
@@ -70,6 +73,30 @@ public class UserRepository extends DBHelper {
 		return false;
 	}
 
+	public List<UserModel> getuserid(String mono, String password) {
+		List<UserModel> list = new ArrayList<UserModel>();
+		try {
+			stmt = conn.prepareStatement("select *from User where umobileno=? and upassword=?");
+			stmt.setString(1,mono);
+			stmt.setString(2,password);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				UserModel model = new UserModel();
+				model.setUid(rs.getInt(1));
+				model.setUname(rs.getString(2));
+				model.setUage(rs.getInt(3));
+				model.setUmobileno(rs.getString(4));
+				model.setUpassword(rs.getString(5));
+				list.add(model);
+			}
+			return list.size() > 0 ? list : null;
+		} catch (Exception ex) {
+			System.out.println("Error is " + ex);
+			return null;
+		}
+	}
+
+	
 	public boolean checkUserId(String temob) {
 		try{
 			stmt = conn.prepareStatement("select *from user where umobileno=?");
@@ -99,5 +126,8 @@ public class UserRepository extends DBHelper {
 			return false;
 		}
 	}
+
+	
+	
 	
 }

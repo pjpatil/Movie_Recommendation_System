@@ -132,9 +132,57 @@ public class GenresRepository extends DBHelper {
 
 
 	}
-		
-	
-	
 
+
+	public List<GenresModel> SearchByGenres(String gentitle) {
+		List<GenresModel> glist=new ArrayList<GenresModel>();
+		List<GenresModel> movies=new ArrayList<>();
+		try {
+			stmt = conn.prepareStatement("select m.mov_id,m.mov_title ,m.mov_year,m.mov_time,m.mov_lang,m.mov_rel_country from movie_genres mg inner join moviemaster m on mg.mov_id=m.mov_id inner join genres g on mg.gen_id=g.gen_id where g.gen_title=?");
+			stmt.setString(1, gentitle);
+			rs=stmt.executeQuery();
+			while(rs.next())
+			{
+				GenresModel gmodel=new GenresModel();
+				gmodel.setMid(rs.getInt(1));
+				gmodel.setMovtitle(rs.getString(2));
+				gmodel.setMovyear(rs.getInt(3));
+				gmodel.setMovtime(rs.getInt(4));
+				gmodel.setMovlang(rs.getString(5));
+				gmodel.setMovrelcountry(rs.getString(6));
+			
+				glist.add(gmodel);
+				
+			}
+			return glist.size() > 0 ? glist : null;
+			
+			
+		}
+		catch (Exception ex) {
+			System.out.println("Error is " + ex);
+		}
+		return movies;
+    	
+	}
+
+
+//	public boolean isAddUserWatchHistory(int uid, int mpid, float rating, String feedback) {
+//		try {
+//			stmt = conn.prepareStatement("insert into UserWatchHistory values('0',?,?,?,?)");
+//			stmt.setInt(1, uid);
+//			stmt.setInt(2, mpid);
+//			stmt.setFloat(3, rating);
+//			stmt.setString(4, feedback);
+//			
+//			int value = stmt.executeUpdate();
+//			return value > 0 ? true : false;
+//
+//		}
+//		catch (Exception ex) {
+//			System.out.println("Error is" + ex);
+//			return false;
+//		}
+//	}
+		
 	
 }

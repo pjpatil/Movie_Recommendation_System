@@ -28,6 +28,11 @@ public class UserService {
 			boolean b= uRepo.isUserValid(mono, password);
 			return b;
 		}
+		
+		public List<UserModel> getuserid(String mono, String password) {
+			
+			return uRepo.getuserid(mono,password);
+		}
 
 
 		public boolean checkUserId(String temob) {
@@ -40,6 +45,11 @@ public class UserService {
 			boolean b=uRepo.changePassword(temob,newpassword);
 			return b;
 		}
+
+
+		
+
+		
 
 
 	

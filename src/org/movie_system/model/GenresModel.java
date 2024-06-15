@@ -16,5 +16,6 @@ public class GenresModel extends MovieMasterModel{
 	public void setGentitle(String gentitle) {
 		this.gentitle = gentitle;
 	}
+	
 
 }

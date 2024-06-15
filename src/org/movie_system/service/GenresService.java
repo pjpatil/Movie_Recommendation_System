@@ -39,6 +39,18 @@ public class GenresService {
 	}
 
 
+	public List<GenresModel> SearchByGenres(String gentitle) {
+	
+		return gRepo.SearchByGenres(gentitle);
+	}
+
+
+//	public boolean isAddUserWatchHistory(int uid, int mpid, float rating, String feedback) {
+//	
+//		return gRepo.isAddUserWatchHistory(uid,mpid,rating,feedback);
+//	}
+
+
 
 	
 
