@@ -14,11 +14,4 @@ Algorithm: Use Naive Bayes algorithm
 8. show the negative review about the movie
 9. show the neutral review about movie
 
-### Student Responsibility 
-1. Design Database using normalization 
-2. Show the table structure 
-3. Draw the ER Diagram of project 
-4. Write Code using standard code layer like as client app – model- service- repository 
-5. Deploy code on GIT
-6. Create Presentation and present project topic on front of guides 
-   
+
