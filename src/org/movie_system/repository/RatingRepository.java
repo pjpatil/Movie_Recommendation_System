@@ -85,7 +85,7 @@ public class RatingRepository extends DBHelper{
     		rs=stmt.executeQuery();
     		while(rs.next()) {
 //    			tmap.put(rs.getString(1), null);
-    			System.out.println(rs.getString(1));
+    			//System.out.println(rs.getString(1));
     			PreparedStatement pst=conn.prepareStatement("select avg(rating_num) from UserWatchHistory  where mov_id =(select mov_id from moviemaster where mov_title=?);");
     					
     			pst.setString(1,rs.getString(1));
